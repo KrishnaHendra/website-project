@@ -165,7 +165,7 @@
   </head>
   <body>
     <div class="container">
-      <!-- <div id="barcodeContent">
+      <div id="barcodeContent">
         <h4 class="title mb-5">Login to <%= shop %></h4>
         <img src="<%= barcodeData.qrCode %>" alt="barcode" width="225px" />
         <p class="text-gray subtitle mt-10">
@@ -215,16 +215,16 @@
           />
         </svg>
         <p class="text-gray subtitle mt-85">Redirecting...</p>
-      </div> -->
+      </div>
 
-      <div id="formCustomer" class="show">
+      <div id="formCustomer" class="hide">
         <center>
           <h4 class="title mb-70">Welcome to <%= shop %></h4>
           <form id="customerForm">
             <div id="alertBody" class="hide">
               <span id="alertMessage"></span>
             </div>
-            <input type="hidden" id="phone" value="6285155464355" />
+            <input type="hidden" id="phone" />
             <div class="form-group">
               <label for="name">What is your name?</label>
               <br />
@@ -296,6 +296,7 @@
           abortFetching();
         }
         if (data.status === 3) {
+          console.log(data);
           loginSuccessContent.classList.remove("hide");
           barcodeContent.classList.add("hide");
           openWhatsappContent.classList.add("hide");
