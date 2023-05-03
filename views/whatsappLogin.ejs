@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bitLogin - Login WhatsApp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;700;900&family=Roboto:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        font-family: "Roboto";
+      }
+      label {
+        color: #262627;
+      }
+      .hide {
+        display: none;
+      }
+      .text-gray {
+        color: #757575;
+      }
+      .title {
+        font-size: 24px;
+      }
+      .subtitle {
+        font-size: 16px;
+      }
+      .mt-10 {
+        margin-top: 10px;
+      }
+      .mt-85 {
+        margin-top: 85px;
+      }
+      .mb-85 {
+        margin-bottom: 85px;
+      }
+      .mb-70 {
+        margin-bottom: 60px;
+      }
+      .mb-5 {
+        margin-bottom: 10px;
+      }
+      .container {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+      }
+      .form-group {
+        display: block;
+        text-align: left;
+        margin: 10px 0;
+      }
+
+      .form-control {
+        margin: 5px 0;
+        width: 400px;
+        padding: 15px;
+        border: 1px solid #dddddd;
+        border-radius: 5px;
+      }
+
+      #btnSubmit {
+        padding: 13px;
+        color: white;
+        border-radius: 10px;
+        background: #262627;
+        font-size: 16px;
+        margin-top: 20px;
+        width: 150px;
+        cursor: pointer;
+      }
+
+      #btnSubmit:hover {
+        background: #393939;
+      }
+
+      #formCustomer {
+        text-align: center;
+      }
+
+      #alertBody {
+        background: #f64848;
+        padding: 15px;
+        color: white;
+        font-size: 16px;
+        font-weight: 400;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        width: 400px;
+      }
+
+      /* Loader */
+      .spinner {
+        margin: 80px auto;
+        width: 90px;
+        height: 80px;
+        text-align: center;
+        font-size: 10px;
+      }
+
+      .spinner > div {
+        background-color: #333;
+        height: 100%;
+        width: 6px;
+        display: inline-block;
+
+        -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+        animation: sk-stretchdelay 1.2s infinite ease-in-out;
+      }
+
+      .spinner .rect2 {
+        -webkit-animation-delay: -1.1s;
+        animation-delay: -1.1s;
+      }
+
+      .spinner .rect3 {
+        -webkit-animation-delay: -1s;
+        animation-delay: -1s;
+      }
+
+      .spinner .rect4 {
+        -webkit-animation-delay: -0.9s;
+        animation-delay: -0.9s;
+      }
+
+      @-webkit-keyframes sk-stretchdelay {
+        0%,
+        40%,
+        100% {
+          -webkit-transform: scaleY(0.4);
+        }
+
+        20% {
+          -webkit-transform: scaleY(1);
+        }
+      }
+
+      @keyframes sk-stretchdelay {
+        0%,
+        40%,
+        100% {
+          transform: scaleY(0.4);
+          -webkit-transform: scaleY(0.4);
+        }
+
+        20% {
+          transform: scaleY(1);
+          -webkit-transform: scaleY(1);
+        }
+      }
+      /* End Loader */
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- <div id="barcodeContent">
+        <h4 class="title mb-5">Login to <%= shop %></h4>
+        <img src="<%= barcodeData.qrCode %>" alt="barcode" width="225px" />
+        <p class="text-gray subtitle mt-10">
+          Scan this QR from your phone camera
+        </p>
+      </div>
+
+      <div id="openWhatsappContent" class="hide">
+        <h4 class="title">Open WhatsApp</h4>
+        <div class="spinner">
+          <div class="rect1"></div>
+          <div class="rect2"></div>
+          <div class="rect3"></div>
+          <div class="rect4"></div>
+        </div>
+        <p class="text-gray subtitle mt-10">
+          Send the WhatsApp message on your phone
+        </p>
+      </div>
+
+      <div id="verifyingWhatsappContent" class="hide">
+        <h4 class="title">Verifying WhatsApp</h4>
+        <div class="spinner">
+          <div class="rect1"></div>
+          <div class="rect2"></div>
+          <div class="rect3"></div>
+          <div class="rect4"></div>
+        </div>
+        <p class="text-gray subtitle mt-10">
+          Click link you received on WhatsApp
+        </p>
+      </div>
+
+      <div id="loginSuccessContent" class="hide">
+        <h4 class="title mb-85">Login Success</h4>
+        <svg
+          width="116"
+          height="116"
+          viewBox="0 0 117 117"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="margin-50"
+        >
+          <path
+            d="M58.5 0.3125C73.9323 0.3125 88.7325 6.44295 99.6448 17.3552C110.557 28.2675 116.688 43.0677 116.688 58.5C116.688 73.9323 110.557 88.7325 99.6448 99.6448C88.7325 110.557 73.9323 116.688 58.5 116.688C43.0677 116.688 28.2675 110.557 17.3552 99.6448C6.44295 88.7325 0.3125 73.9323 0.3125 58.5C0.3125 43.0677 6.44295 28.2675 17.3552 17.3552C28.2675 6.44295 43.0677 0.3125 58.5 0.3125ZM51.2515 69.9796L38.3256 57.0453C37.8622 56.5819 37.312 56.2143 36.7066 55.9636C36.1012 55.7128 35.4522 55.5837 34.7969 55.5837C34.1416 55.5837 33.4927 55.7128 32.8872 55.9636C32.2818 56.2143 31.7316 56.5819 31.2682 57.0453C30.3324 57.9812 29.8066 59.2505 29.8066 60.574C29.8066 61.8975 30.3324 63.1668 31.2682 64.1026L47.727 80.5614C48.1891 81.0271 48.7388 81.3967 49.3444 81.649C49.95 81.9012 50.5996 82.0311 51.2557 82.0311C51.9117 82.0311 52.5613 81.9012 53.1669 81.649C53.7725 81.3967 54.3222 81.0271 54.7843 80.5614L88.8656 46.4718C89.3351 46.0103 89.7087 45.4605 89.9647 44.8539C90.2207 44.2473 90.3541 43.5961 90.3572 42.9377C90.3602 42.2794 90.2329 41.6269 89.9826 41.018C89.7322 40.4091 89.3638 39.8557 88.8985 39.3899C88.4332 38.9241 87.8803 38.555 87.2717 38.3039C86.6631 38.0529 86.0108 37.9248 85.3524 37.9271C84.694 37.9293 84.0426 38.062 83.4358 38.3172C82.8289 38.5725 82.2786 38.9455 81.8166 39.4145L51.2515 69.9796Z"
+            fill="#25D366"
+          />
+        </svg>
+        <p class="text-gray subtitle mt-85">Redirecting...</p>
+      </div> -->
+
+      <div id="formCustomer" class="show">
+        <center>
+          <h4 class="title mb-70">Welcome to <%= shop %></h4>
+          <form id="customerForm">
+            <div id="alertBody" class="hide">
+              <span id="alertMessage"></span>
+            </div>
+            <input type="hidden" id="phone" value="6285155464355" />
+            <div class="form-group">
+              <label for="name">What is your name?</label>
+              <br />
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="Full Name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">What is your email?</label>
+              <br />
+              <input
+                type="text"
+                class="form-control"
+                id="email"
+                placeholder="Email"
+              />
+            </div>
+            <button type="submit" id="btnSubmit">Submit</button>
+          </form>
+        </center>
+      </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script>
+      const apiUrl = "<%= apiUrl %>";
+      const barcodeContent = document.getElementById("barcodeContent");
+      const openWhatsappContent = document.getElementById(
+        "openWhatsappContent"
+      );
+      const verifyingWhatsappContent = document.getElementById(
+        "verifyingWhatsappContent"
+      );
+      const loginSuccessContent = document.getElementById(
+        "loginSuccessContent"
+      );
+      const formCustomerContent = document.getElementById("formCustomer");
+
+      const socket = io.connect(apiUrl, {
+        path: "/bitlogin/socket.io/",
+      });
+
+      const rand = Math.random().toString();
+      socket.emit("join-auth-whatsapp", { id: rand });
+
+      socket.on("connect", () => {
+        console.log("Socket Connected");
+      });
+
+      socket.on("login-whatsapp", (data) => {
+        if (data.status === 1) {
+          sessionStorage.setItem("code", data.code);
+          openWhatsappContent.classList.remove("hide");
+          barcodeContent.classList.add("hide");
+          verifyingWhatsappContent.classList.add("hide");
+          loginSuccessContent.classList.add("hide");
+          formCustomerContent.classList.add("hide");
+          fetchChatUser();
+        }
+        if (data.status === 2) {
+          verifyingWhatsappContent.classList.remove("hide");
+          barcodeContent.classList.add("hide");
+          openWhatsappContent.classList.add("hide");
+          loginSuccessContent.classList.add("hide");
+          formCustomerContent.classList.add("hide");
+          abortFetching();
+        }
+        if (data.status === 3) {
+          loginSuccessContent.classList.remove("hide");
+          barcodeContent.classList.add("hide");
+          openWhatsappContent.classList.add("hide");
+          verifyingWhatsappContent.classList.add("hide");
+          formCustomerContent.classList.add("hide");
+          window.location.href = `${apiUrl}/bitlogin/api/login/whatsapp/callback?email=${data.email}`;
+        }
+      });
+
+      const updateInterval = 2500;
+      const validateWhatsappUrl = `${apiUrl}/bitlogin/api/login/whatsapp/status`;
+      const controller = new AbortController();
+      const signal = controller.signal;
+
+      function fetchChatUser() {
+        const code = sessionStorage.getItem("code");
+        fetch(`${validateWhatsappUrl}?code=${code}`, {
+          method: "get",
+          signal,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setTimeout(fetchChatUser, updateInterval);
+          })
+          .catch((error) => {
+            console.log("Error fetching updates: " + error);
+            setTimeout(fetchChatUser, updateInterval);
+          });
+      }
+
+      function abortFetching() {
+        controller.abort();
+      }
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        $("#customerForm").submit(function (e) {
+          const phone = $("#phone").val();
+          const name = $("#name").val();
+          const email = $("#email").val();
+          const domain = "<%= shop %>";
+          const alertContent = $("#alertBody");
+
+          $.ajax({
+            method: "POST",
+            url: "/shopify/customer",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify({
+              name,
+              email,
+              phone,
+              domain,
+            }),
+            beforeSend: function (data) {
+              $("#btnSubmit").attr("disabled", true);
+              $("#btnSubmit").text("Please wait...");
+            },
+            error: function (err) {
+              console.log(err);
+            },
+            success: function (data) {
+              console.log(data);
+              if (!data.success) {
+                alertContent.removeClass("hide");
+                $("#alertMessage").text(data.message);
+                $("#btnSubmit").attr("disabled", false);
+                $("#btnSubmit").text("Submit");
+              }
+            },
+          });
+
+          e.preventDefault();
+        });
+      });
+    </script>
+  </body>
+</html>
