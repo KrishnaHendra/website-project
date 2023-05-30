@@ -1,125 +1,23 @@
-const axios = require("axios");
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const router = require("./routes");
 
 dotenv.config();
 
-const port = process.env.PORT;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.set("view engine", "ejs");
-
-app.get("/success", async (req, res) => {
-  try {
-    const { code, type } = req.query;
-    const apiUrl = process.env.BACKEND_URL;
-    const { data } = await axios.get(
-      `${apiUrl}/bitlogin/api/login/whatsapp/status?code=${code}`
-    );
-    const whatsappNumber = process.env.WHATSAPP_NUMBER;
-    res.render("successPage", {
-      data,
-      type,
-      whatsappNumber,
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+app.use(router);
 
 app.get("/", (req, res) => {
-  res.status(200).json({
-    message: "Dashboard bitLogin Frontend",
-  });
+  const data = "<center><h1>Welcome to bitLogin!</h1></center>";
+  res.send(data);
 });
 
-// app.get("/testing", (req, res) => {
-//   res.render("testing");
-// });
-
-app.get("/login", async (req, res) => {
-  const { shop, code } = req.query;
-  const apiUrl = process.env.BACKEND_URL;
-  const { data: barcodeData } = await axios.get(
-    `${apiUrl}/bitlogin/api/login/whatsapp/barcode/${shop}?code=${code}`
-  );
-  res.render("whatsappLogin", { barcodeData, shop, apiUrl });
-});
-
-app.post("/shopify/customer", async (req, res) => {
-  try {
-    const { name, email, phone, domain } = req.body;
-    const apiUrl = process.env.SOCKET_URL;
-
-    if (!name) {
-      return res.json({
-        success: false,
-        message: "Name is required!",
-      });
-    }
-    if (!email) {
-      return res.json({
-        success: false,
-        message: "Email is required!",
-      });
-    }
-    if (
-      !email.match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      )
-    ) {
-      return res.json({
-        success: false,
-        message: "Email format is incorrect!",
-      });
-    }
-
-    const { data } = await axios.post(
-      `${apiUrl}/bitlogin/api/shopify/customer`,
-      {
-        name,
-        email,
-        phone,
-        domain,
-      }
-    );
-
-    res.status(201).json(data);
-  } catch (err) {
-    res.status(500).json({
-      message: "Some error occured",
-      error: err.message,
-      detail: err,
-    });
-  }
-});
-
-app.get("/translate", (req, res) => {
-  try {
-    let { language } = req.query;
-
-    if (!language) language = "en";
-
-    res.json({
-      message: "Successfully get language",
-      data: {
-        from: "en",
-        to: language,
-        text: data[language],
-      },
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: "Some error occured",
-      error: err.message,
-      detail: err,
-    });
-  }
-});
-
+const port = process.env.PORT;
 app.listen(port, (req, res) => {
   console.log(`Server running on port ${port}`);
 });
