@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>bitLogin - Login WhatsApp</title>
+    <title>bitLogin - Login WhatsApp Page</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -174,13 +174,6 @@
   </head>
   <body>
     <div class="container">
-      <div id="barcodeContent">
-        <h4 class="title mb-5">Login to <%= shopName %></h4>
-        <img src="<%= barcodeData.qrCode %>" alt="barcode" width="225px" />
-        <p class="text-gray subtitle mt-10">
-          Scan this QR from your phone camera
-        </p>
-      </div>
 
       <div id="openWhatsappContent" class="hide">
         <h4 class="title">Open WhatsApp</h4>
@@ -195,18 +188,6 @@
         </p>
       </div>
 
-      <div id="verifyingWhatsappContent" class="hide">
-        <h4 class="title">Verifying WhatsApp</h4>
-        <div class="spinner">
-          <div class="rect1"></div>
-          <div class="rect2"></div>
-          <div class="rect3"></div>
-          <div class="rect4"></div>
-        </div>
-        <p class="text-gray subtitle mt-10">
-          Click link you received on WhatsApp
-        </p>
-      </div>
 
       <div id="loginSuccessContent" class="hide">
         <h4 class="title mb-85">Login Success</h4>
@@ -339,21 +320,6 @@
         const controller = new AbortController();
         const signal = controller.signal;
 
-        function fetchChatUser() {
-          const code = sessionStorage.getItem("code");
-          fetch(`${validateWhatsappUrl}?code=${code}`, {
-            method: "get",
-            signal,
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              setTimeout(fetchChatUser, updateInterval);
-            })
-            .catch((error) => {
-              console.log("Error fetching updates: " + error);
-              setTimeout(fetchChatUser, updateInterval);
-            });
-        }
 
         function abortFetching() {
           controller.abort();
