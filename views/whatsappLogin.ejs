@@ -339,21 +339,6 @@
         const controller = new AbortController();
         const signal = controller.signal;
 
-        function fetchChatUser() {
-          const code = sessionStorage.getItem("code");
-          fetch(`${validateWhatsappUrl}?code=${code}`, {
-            method: "get",
-            signal,
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              setTimeout(fetchChatUser, updateInterval);
-            })
-            .catch((error) => {
-              console.log("Error fetching updates: " + error);
-              setTimeout(fetchChatUser, updateInterval);
-            });
-        }
 
         function abortFetching() {
           controller.abort();
