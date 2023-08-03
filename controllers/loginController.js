@@ -3,6 +3,8 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+const apiUrl = process.env.BACKEND_URL;
+
 const loginWhatsapp = async (req, res) => {
   try {
     const { shop, code } = req.query;
@@ -16,7 +18,7 @@ const loginWhatsapp = async (req, res) => {
     );
     if (!accessToken) {
       return res.json({
-        message: "Access token undefined",
+        message: "Access token not found",
       });
     }
 
@@ -29,7 +31,11 @@ const loginWhatsapp = async (req, res) => {
         "X-Shopify-Access-Token": accessToken,
       },
     });
-    
+
+    const { data: barcodeData } = await axios.get(
+      `${apiUrl}/bitlogin/api/login/whatsapp/barcode/${shop}?code=${code}`
+    );
+
     res.render("whatsappLogin", {
       barcodeData,
       shop,
@@ -80,6 +86,28 @@ const loginWhatsappWithDomain = async (req, res) => {
   }
 };
 
+const loginSuccess = async (req, res) => {
+  try {
+    const { code, type } = req.query;
+
+    const { data } = await axios.get(
+      `${apiUrl}/bitlogin/api/login/whatsapp/status?code=${code}`
+    );
+    const whatsappNumber = process.env.WHATSAPP_NUMBER;
+
+    res.render("successPage", {
+      data,
+      type,
+      whatsappNumber,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Some error occured",
+      error: err.message,
+      detail: err,
+    });
+  }
+};
 
 module.exports = {
   loginWhatsapp,
