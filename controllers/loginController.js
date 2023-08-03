@@ -16,7 +16,7 @@ const loginWhatsapp = async (req, res) => {
     );
     if (!accessToken) {
       return res.json({
-        message: "Access token not found",
+        message: "Access token undefined",
       });
     }
 
