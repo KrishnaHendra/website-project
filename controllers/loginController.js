@@ -29,11 +29,7 @@ const loginWhatsapp = async (req, res) => {
         "X-Shopify-Access-Token": accessToken,
       },
     });
-
-    const { data: barcodeData } = await axios.get(
-      `${apiUrl}/bitlogin/api/login/whatsapp/barcode/${shop}?code=${code}`
-    );
-
+    
     res.render("whatsappLogin", {
       barcodeData,
       shop,
