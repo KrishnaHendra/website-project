@@ -5,19 +5,6 @@ dotenv.config();
 
 const loginWhatsappWithDomain = async (req, res) => {
   try {
-    const { data: integration } = await axios.get(
-      `${apiUrl}/bitlogin/api/integrations/shopify`,
-      {
-        params: {
-          domain: shop,
-        },
-      }
-    );
-    if (integration.data.length === 0) {
-      return res.json({
-        message: "Company integration not found",
-      });
-    }
     const companyId = integration.data[0].companyId;
     const {
       data: {
