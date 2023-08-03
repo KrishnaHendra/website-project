@@ -84,28 +84,6 @@ const loginWhatsappWithDomain = async (req, res) => {
   }
 };
 
-const loginSuccess = async (req, res) => {
-  try {
-    const { code, type } = req.query;
-
-    const { data } = await axios.get(
-      `${apiUrl}/bitlogin/api/login/whatsapp/status?code=${code}`
-    );
-    const whatsappNumber = process.env.WHATSAPP_NUMBER;
-
-    res.render("successPage", {
-      data,
-      type,
-      whatsappNumber,
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: "Some error occured",
-      error: err.message,
-      detail: err,
-    });
-  }
-};
 
 module.exports = {
   loginWhatsapp,
