@@ -3,48 +3,6 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const loginWhatsapp = async (req, res) => {
-  try {
-    const { shop, code } = req.query;
-
-    const {
-      data: {
-        data: { accessToken },
-      },
-    } = await axios.get(
-      `${apiUrl}/integrations/api/shopify/BITLOGIN/auth/${shop}`
-    );
-    if (!accessToken) {
-      return res.json({
-        message: "Access token undefined",
-      });
-    }
-
-    const {
-      data: {
-        shop: { name: shopName },
-      },
-    } = await axios.get(`https://${shop}/admin/api/2022-04/shop.json`, {
-      headers: {
-        "X-Shopify-Access-Token": accessToken,
-      },
-    });
-    
-    res.render("whatsappLogin", {
-      barcodeData,
-      shop,
-      apiUrl,
-      shopName,
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: "Some error occured",
-      error: err.message,
-      detail: err,
-    });
-  }
-};
-
 const loginWhatsappWithDomain = async (req, res) => {
   try {
     const { data: integration } = await axios.get(
