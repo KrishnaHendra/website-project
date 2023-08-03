@@ -3,8 +3,6 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const apiUrl = process.env.BACKEND_URL;
-
 const loginWhatsapp = async (req, res) => {
   try {
     const { shop, code } = req.query;
