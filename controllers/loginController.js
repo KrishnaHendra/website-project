@@ -11,19 +11,6 @@ const loginWhatsapp = async (req, res) => {
 
     const {
       data: {
-        data: { accessToken },
-      },
-    } = await axios.get(
-      `${apiUrl}/integrations/api/shopify/BITLOGIN/auth/${shop}`
-    );
-    if (!accessToken) {
-      return res.json({
-        message: "Access token not found",
-      });
-    }
-
-    const {
-      data: {
         shop: { name: shopName },
       },
     } = await axios.get(`https://${shop}/admin/api/2022-04/shop.json`, {
