@@ -19,10 +19,6 @@ const loginWhatsapp = async (req, res) => {
       },
     });
 
-    const { data: barcodeData } = await axios.get(
-      `${apiUrl}/bitlogin/api/login/whatsapp/barcode/${shop}?code=${code}`
-    );
-
     res.render("whatsappLogin", {
       barcodeData,
       shop,
