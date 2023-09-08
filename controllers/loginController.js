@@ -46,7 +46,7 @@ const loginWhatsappWithDomain = async (req, res) => {
     );
     if (integration.data.length === 0) {
       return res.json({
-        message: "Company integration not found",
+        message: "[Error] Company integration not found",
       });
     }
     const companyId = integration.data[0].companyId;
