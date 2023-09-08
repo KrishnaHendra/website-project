@@ -46,8 +46,7 @@ const postShopifyCustomer = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: "Some error occured",
-      error: err.message,
-      detail: err,
+      error: err.message
     });
   }
 };
