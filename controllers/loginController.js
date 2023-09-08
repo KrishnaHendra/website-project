@@ -7,20 +7,7 @@ const apiUrl = process.env.BACKEND_URL;
 
 const loginWhatsapp = async (req, res) => {
   try {
-    const { shop, code } = req.query;
-
-    const {
-      data: {
-        data: { accessToken },
-      },
-    } = await axios.get(
-      `${apiUrl}/integrations/api/shopify/BITLOGIN/auth/${shop}`
-    );
-    if (!accessToken) {
-      return res.json({
-        message: "Access token not found",
-      });
-    }
+    const { domain, code } = req.query;
 
     const {
       data: {
@@ -31,10 +18,6 @@ const loginWhatsapp = async (req, res) => {
         "X-Shopify-Access-Token": accessToken,
       },
     });
-
-    const { data: barcodeData } = await axios.get(
-      `${apiUrl}/bitlogin/api/login/whatsapp/barcode/${shop}?code=${code}`
-    );
 
     res.render("whatsappLogin", {
       barcodeData,
@@ -63,7 +46,7 @@ const loginWhatsappWithDomain = async (req, res) => {
     );
     if (integration.data.length === 0) {
       return res.json({
-        message: "Company integration not found",
+        message: "[Error] Company integration not found",
       });
     }
     const companyId = integration.data[0].companyId;
