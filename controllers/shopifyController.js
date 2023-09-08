@@ -53,6 +53,5 @@ const postShopifyCustomer = async (req, res) => {
 };
 
 module.exports = {
-  getShopifyCustomer,
   postShopifyCustomer,
 };
