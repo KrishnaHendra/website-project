@@ -5,12 +5,6 @@ dotenv.config();
 
 const apiUrl = process.env.BACKEND_URL;
 
-const getShopifyCustomer = async (req, res) => {
-  res.status(200).json({
-    message: "OK",
-  });
-};
-
 const postShopifyCustomer = async (req, res) => {
   try {
     const { name, email, phone, domain } = req.body;
