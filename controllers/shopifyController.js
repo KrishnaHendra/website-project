@@ -12,13 +12,13 @@ const postShopifyCustomer = async (req, res) => {
     if (!name) {
       return res.json({
         success: false,
-        message: "Name is required!",
+        message: "[Error] Name is required!",
       });
     }
     if (!email) {
       return res.json({
         success: false,
-        message: "Email is required!",
+        message: "[Error] Email is required!",
       });
     }
     if (
@@ -28,7 +28,7 @@ const postShopifyCustomer = async (req, res) => {
     ) {
       return res.json({
         success: false,
-        message: "Email format is incorrect!",
+        message: "[Error] Email format is incorrect!",
       });
     }
 
