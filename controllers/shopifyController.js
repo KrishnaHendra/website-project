@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const apiUrl = process.env.BACKEND_URL;
+const bitloginUrl = process.env.BITLOGIN_URL;
 
 const getShopifyCustomer = async (req, res) => {
   res.status(200).json({
@@ -13,7 +13,7 @@ const getShopifyCustomer = async (req, res) => {
 
 const postShopifyCustomer = async (req, res) => {
   try {
-    const { name, email, phone, domain } = req.body;
+    const {name, email, phone, domain} = req.body;
 
     if (!name) {
       return res.json({
@@ -38,15 +38,12 @@ const postShopifyCustomer = async (req, res) => {
       });
     }
 
-    const { data } = await axios.post(
-      `${apiUrl}/bitlogin/api/shopify/customer`,
-      {
-        name,
-        email,
-        phone,
-        domain,
-      }
-    );
+    const {data} = await axios.post(`${bitloginUrl}/shopify/customer`, {
+      name,
+      email,
+      phone,
+      domain,
+    });
 
     res.status(201).json(data);
   } catch (err) {

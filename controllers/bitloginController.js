@@ -3,7 +3,8 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const apiUrl = process.env.BACKEND_URL;
+const bitloginUrl = process.env.BITLOGIN_URL;
+const integrationUrl = process.env.INTEGRATION_URL;
 
 const getAuthWhatsapp = async (req, res) => {
   try {
@@ -13,9 +14,7 @@ const getAuthWhatsapp = async (req, res) => {
       data: {
         data: {accessToken},
       },
-    } = await axios.get(
-      `${apiUrl}/integrations/api/shopify/BITLOGIN/auth/${domain}`
-    );
+    } = await axios.get(`${integrationUrl}/shopify/BITLOGIN/auth/${domain}`);
     if (!accessToken) {
       return res.json({
         message: "Access token not found",
@@ -33,13 +32,13 @@ const getAuthWhatsapp = async (req, res) => {
     });
 
     const {data: barcodeData} = await axios.get(
-      `${apiUrl}/bitlogin/api/login/whatsapp/barcode/${domain}?code=${code}`
+      `${bitloginUrl}/login/whatsapp/barcode/${domain}?code=${code}`
     );
 
     res.render("whatsappLogin", {
       barcodeData,
       shop: domain,
-      apiUrl,
+      apiUrl: process.env.BASE_URL,
       shopName,
     });
   } catch (err) {
@@ -56,7 +55,7 @@ const handleSuccessLogin = async (req, res) => {
     const {code, type} = req.query;
 
     const {data} = await axios.get(
-      `${apiUrl}/bitlogin/api/login/whatsapp/status?code=${code}`
+      `${bitloginUrl}/login/whatsapp/status?code=${code}`
     );
     const whatsappNumber = process.env.WHATSAPP_NUMBER;
 
