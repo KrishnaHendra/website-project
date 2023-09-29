@@ -272,8 +272,12 @@
         const formCustomerContent = document.getElementById("formCustomer");
         const linkLogin = document.getElementById("linkLogin");
 
-        const socket = io.connect(apiUrl, {
+        // const socket = io.connect(apiUrl, {
+        //   path: "/bitlogin/socket.io/",
+        // });
+        const socket = io(apiUrl, {
           path: "/bitlogin/socket.io/",
+          transports: ["websocket"],
         });
 
         const rand = Math.random().toString();
